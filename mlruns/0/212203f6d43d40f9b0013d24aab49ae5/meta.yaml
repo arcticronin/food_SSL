@@ -1,8 +1,9 @@
 artifact_uri: file:///home/ronin/Dev/notebooks/machinelearningformodeling/supervised/project/mlruns/0/212203f6d43d40f9b0013d24aab49ae5/artifacts
+deleted_time: 1717686975814
 end_time: null
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: 212203f6d43d40f9b0013d24aab49ae5
 run_name: judicious-bat-376
 run_uuid: 212203f6d43d40f9b0013d24aab49ae5

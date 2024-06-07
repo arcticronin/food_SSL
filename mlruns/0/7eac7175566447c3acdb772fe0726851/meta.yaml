@@ -1,0 +1,16 @@
+artifact_uri: file:///home/ronin/Dev/notebooks/machinelearningformodeling/supervised/project/mlruns/0/7eac7175566447c3acdb772fe0726851/artifacts
+deleted_time: 1717737062895
+end_time: 1717730710685
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 7eac7175566447c3acdb772fe0726851
+run_name: netFromSSL
+run_uuid: 7eac7175566447c3acdb772fe0726851
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717715977309
+status: 3
+tags: []
+user_id: ronin

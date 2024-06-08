@@ -1,0 +1,15 @@
+artifact_uri: file:///home/ronin/Dev/notebooks/machinelearningformodeling/supervised/project/mlruns/0/4feeff9029cc4c89bfc35a39b31fbea2/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 4feeff9029cc4c89bfc35a39b31fbea2
+run_name: netFromScratch
+run_uuid: 4feeff9029cc4c89bfc35a39b31fbea2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717768921064
+status: 1
+tags: []
+user_id: ronin

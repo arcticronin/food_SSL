@@ -1,0 +1,15 @@
+artifact_uri: file:///home/claudio/Scrivania/Supervised%20Learning/food_SSL/mlruns/0/2507215ca5a340229d96b5a0c1bf1ceb/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 2507215ca5a340229d96b5a0c1bf1ceb
+run_name: squeezenet
+run_uuid: 2507215ca5a340229d96b5a0c1bf1ceb
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717849098661
+status: 1
+tags: []
+user_id: claudio

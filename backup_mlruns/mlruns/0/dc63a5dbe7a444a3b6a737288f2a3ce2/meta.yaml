@@ -1,0 +1,15 @@
+artifact_uri: file:///home/ronin/Dev/notebooks/machinelearningformodeling/supervised/project/mlruns/0/dc63a5dbe7a444a3b6a737288f2a3ce2/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: dc63a5dbe7a444a3b6a737288f2a3ce2
+run_name: intrigued-shrike-736
+run_uuid: dc63a5dbe7a444a3b6a737288f2a3ce2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717843922053
+status: 1
+tags: []
+user_id: claudio

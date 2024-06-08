@@ -1,0 +1,15 @@
+artifact_uri: file:///home/ronin/Dev/notebooks/machinelearningformodeling/supervised/project/mlruns/0/df1c660444eb477f824ade400cece8aa/artifacts
+end_time: 1717841908964
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: df1c660444eb477f824ade400cece8aa
+run_name: zealous-dove-773
+run_uuid: df1c660444eb477f824ade400cece8aa
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717841828958
+status: 3
+tags: []
+user_id: claudio

@@ -1,0 +1,15 @@
+artifact_uri: file:///home/ronin/Dev/notebooks/machinelearningformodeling/supervised/project/mlruns/0/80252a3342a64b2ab6134283520ba6b4/artifacts
+end_time: 1717843813843
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 80252a3342a64b2ab6134283520ba6b4
+run_name: clumsy-gull-476
+run_uuid: 80252a3342a64b2ab6134283520ba6b4
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717842897146
+status: 3
+tags: []
+user_id: claudio

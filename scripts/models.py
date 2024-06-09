@@ -112,7 +112,7 @@ class ColorizationSqueezeNet(nn.Module):
         self.features = nn.Sequential(
             nn.Conv2d(
                 1, 64, kernel_size=3, stride=2, padding=1
-            ),  # Change input channels to 1
+            ),  # Change input channels to 1 black and white
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=3, stride=2, ceil_mode=True),
             Fire(64, 16, 64, 64),

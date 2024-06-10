@@ -86,7 +86,9 @@ class SqueezeNet(nn.Module):
         self.encoder = Encoder()
 
         self.classifier = nn.Sequential(
-            nn.AdaptiveAvgPool2d((1, 1)),  # Ensures the output is (N, C, 1, 1)
+            nn.AdaptiveAvgPool2d(
+                (1, 1)
+            ),  # Ensures the output is (N, C, 1, 1), it was N C 14 14
             nn.Flatten(),  # Flatten the output to (N, C)
             nn.Linear(512, 350),  # Linear layer to get the desired feature dimension
             nn.ReLU(inplace=True),

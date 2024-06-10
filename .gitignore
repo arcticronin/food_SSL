@@ -1,4 +1,10 @@
 data/
 iFood_2019/
 SSL/
-scripts/__pycache__/
+scripts/__pycache__
+mlruns/
+data_raw/
+data.zip
+SSL_data/
+backup_mlruns/
+

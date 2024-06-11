@@ -294,3 +294,61 @@ class StormSqueezeNet(nn.Module):
         x = self.classifier2(x)
         return torch.flatten(x, 1)
 
+
+class StormColorModel(nn.Module):
+    # This model is based on StormSqueezeNet with the addition of a decoder
+    #  in order to perform colorization for self-supervised learning
+
+    def __init__(self, num_classes: int = 251, dropout: float = 0.5) -> None:
+        super().__init__()
+        self.num_classes = num_classes
+
+        self.features = nn.Sequential(
+            
+            nn.Conv2d(1, 64, kernel_size=3, stride=2),
+            nn.LeakyReLU(inplace=True),
+
+            nn.MaxPool2d(kernel_size=3, stride=2, ceil_mode=True),
+
+            StormFire(64, 16, 64, 64),
+            StormFire(128, 16, 64, 64),
+
+            nn.MaxPool2d(kernel_size=3, stride=2, ceil_mode=True),
+
+            StormFire(128, 32, 128, 128),
+            StormFire(256, 32, 128, 128),
+
+            nn.MaxPool2d(kernel_size=3, stride=2, ceil_mode=True),
+
+            StormFire(256, 48, 192, 192),
+            StormFire(384, 64, 256, 256),
+            
+        )
+
+     
+        self.decoder = nn.Sequential(
+            nn.ConvTranspose2d(512, 192, kernel_size=3, stride=2, padding=1, output_padding=1),
+            nn.BatchNorm2d(192),
+            nn.LeakyReLU(inplace=True),
+            StormFire(192, 48, 192, 192),
+            nn.ConvTranspose2d(384, 128, kernel_size=3, stride=2, padding=1, output_padding=1),
+            nn.BatchNorm2d(128),
+            nn.LeakyReLU(inplace=True),
+            StormFire(128, 32, 128, 128),
+            nn.ConvTranspose2d(256, 64, kernel_size=3, stride=2, padding=1, output_padding=1),
+            nn.BatchNorm2d(64),
+            nn.LeakyReLU(inplace=True),
+            StormFire(64, 16, 64, 64),
+            nn.ConvTranspose2d(128, 64, kernel_size=3, stride=2, padding=1, output_padding=1),
+            nn.BatchNorm2d(64),
+            nn.LeakyReLU(inplace=True),
+            nn.Conv2d(64, 3, kernel_size=3, padding=1),  # Final layer to get back to original channels
+            nn.Tanh()  # Assuming the original images are normalized to [-1, 1]
+        )
+
+
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        encoded = self.features(x)
+        print(encoded.shape)
+        return self.decoder(encoded)

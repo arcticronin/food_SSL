@@ -195,8 +195,62 @@ class Decoder(nn.Module):
 
 
 
-############ Custom Model ############
-class StormFire(nn.Module):
+##############################################################################        
+#                                                                            #
+#                                Custom Models                               #
+#                                                                            #
+##############################################################################
+class StormModel(nn.Module):
+    # This net is a custom version of SqueezeNet: we replaced the Fire module with our custom FireStorm module,
+    # modified the final convolutional layer into a fully connected layer
+    # we used leaky ReLU instead of ReLU
+    # we added BatchNorm after each convolutional layer
+    # we modified the number of fire modules and the number of filters in each fire module
+
+    def __init__(self, num_classes: int = 251, dropout: float = 0.5) -> None:
+        super().__init__()
+        self.num_classes = num_classes
+        self.features = nn.Sequential(
+            
+            nn.Conv2d(3, 64, kernel_size=3, stride=2),
+            nn.LeakyReLU(inplace=True),
+
+            nn.MaxPool2d(kernel_size=3, stride=2, ceil_mode=True),
+
+            FireStorm(64, 16, 64, 64),
+            FireStorm(128, 16, 64, 64),
+
+            nn.MaxPool2d(kernel_size=3, stride=2, ceil_mode=True),
+
+            FireStorm(128, 32, 128, 128),
+            FireStorm(256, 32, 128, 128),
+
+            nn.MaxPool2d(kernel_size=3, stride=2, ceil_mode=True),
+
+            FireStorm(256, 48, 192, 192),
+            FireStorm(384, 64, 256, 256),
+            
+        )
+
+
+        self.classifier = nn.Sequential(
+            nn.AdaptiveAvgPool2d((1, 1)),
+            nn.Flatten(),
+            nn.Linear(512, 512),
+            nn.LeakyReLU(inplace=True),
+            nn.Dropout(p=dropout),
+            nn.Linear(512, self.num_classes),
+        )
+       
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        x = self.features(x)
+        x = self.classifier(x)
+        return torch.flatten(x, 1)
+
+
+
+
+class FireStorm(nn.Module):
     # This model is based on Fire module from SqueezeNet with the addition of BatchNorm 
     # and the change of ReLU to LeakyReLU
 
@@ -235,11 +289,11 @@ class StormFire(nn.Module):
             ),
             ], 1)
             
-        
 
 
-class StormSqueezeNet(nn.Module):
-    # This net is a custom version of SqueezeNet: we replaced the Fire module with our custom StormFire module,
+
+class StormColorModel(nn.Module):
+    # This net is a custom version of SqueezeNet: we replaced the Fire module with our custom FireStorm module,
     # modified the final convolutional layer into a fully connected layer
     # we used leaky ReLU instead of ReLU
     # we added BatchNorm after each convolutional layer
@@ -248,103 +302,54 @@ class StormSqueezeNet(nn.Module):
     def __init__(self, num_classes: int = 251, dropout: float = 0.5) -> None:
         super().__init__()
         self.num_classes = num_classes
-        self.features = nn.Sequential(
-            
-            nn.Conv2d(3, 64, kernel_size=3, stride=2),
-            nn.LeakyReLU(inplace=True),
-
-            nn.MaxPool2d(kernel_size=3, stride=2, ceil_mode=True),
-
-            StormFire(64, 16, 64, 64),
-            StormFire(128, 16, 64, 64),
-
-            nn.MaxPool2d(kernel_size=3, stride=2, ceil_mode=True),
-
-            StormFire(128, 32, 128, 128),
-            StormFire(256, 32, 128, 128),
-
-            nn.MaxPool2d(kernel_size=3, stride=2, ceil_mode=True),
-
-            StormFire(256, 48, 192, 192),
-            StormFire(384, 64, 256, 256),
-            
-        )
-
-        # Final convolution is initialized differently from the rest
-        final_conv = nn.Conv2d(512, self.num_classes, kernel_size=1)
-        
-        self.classifier = nn.Sequential(
-            nn.Dropout(p=dropout),
-            final_conv,
-            nn.LeakyReLU(inplace=True),
-            nn.AdaptiveAvgPool2d((1, 1)),
-        )
-
-        self.classifier2 = nn.Sequential(
-            nn.AdaptiveAvgPool2d((1, 1)),
-            nn.Flatten(),
-            nn.Linear(512, 512),
-            nn.LeakyReLU(inplace=True),
-            nn.Dropout(p=dropout),
-            nn.Linear(512, self.num_classes),
-        )
-       
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x = self.features(x)
-        x = self.classifier2(x)
-        return torch.flatten(x, 1)
-
-
-class StormColorModel(nn.Module):
-    # This model is based on StormSqueezeNet with the addition of a decoder
-    #  in order to perform colorization for self-supervised learning
-
-    def __init__(self, num_classes: int = 251, dropout: float = 0.5) -> None:
-        super().__init__()
-        self.num_classes = num_classes
 
         self.features = nn.Sequential(
             
-            nn.Conv2d(1, 64, kernel_size=3, stride=2),
+            nn.Conv2d(1, 64, kernel_size=3, stride=2, padding=1),
             nn.LeakyReLU(inplace=True),
 
             nn.MaxPool2d(kernel_size=3, stride=2, ceil_mode=True),
 
-            StormFire(64, 16, 64, 64),
-            StormFire(128, 16, 64, 64),
+            FireStorm(64, 16, 64, 64),
+            FireStorm(128, 16, 64, 64),
 
             nn.MaxPool2d(kernel_size=3, stride=2, ceil_mode=True),
 
-            StormFire(128, 32, 128, 128),
-            StormFire(256, 32, 128, 128),
+            FireStorm(128, 32, 128, 128),
+            FireStorm(256, 32, 128, 128),
 
             nn.MaxPool2d(kernel_size=3, stride=2, ceil_mode=True),
 
-            StormFire(256, 48, 192, 192),
-            StormFire(384, 64, 256, 256),
+            FireStorm(256, 48, 192, 192),
+            FireStorm(384, 64, 256, 256),
             
         )
 
      
         self.decoder = nn.Sequential(
-            nn.ConvTranspose2d(512, 192, kernel_size=3, stride=2, padding=1, output_padding=1),
-            nn.BatchNorm2d(192),
+
+            FireStorm(512, 64, 128, 128),
+
+            nn.ConvTranspose2d(256, 128, kernel_size=3, stride=2, padding=1, output_padding=1),
             nn.LeakyReLU(inplace=True),
-            StormFire(192, 48, 192, 192),
-            nn.ConvTranspose2d(384, 128, kernel_size=3, stride=2, padding=1, output_padding=1),
             nn.BatchNorm2d(128),
+
+            FireStorm(128, 32, 32, 32),
+
+            nn.ConvTranspose2d(64, 32, kernel_size=3, stride=2, padding=1, output_padding=1),
             nn.LeakyReLU(inplace=True),
-            StormFire(128, 32, 128, 128),
-            nn.ConvTranspose2d(256, 64, kernel_size=3, stride=2, padding=1, output_padding=1),
-            nn.BatchNorm2d(64),
+            nn.BatchNorm2d(32),
+
+            FireStorm(32, 16, 16, 16),
+
+            nn.ConvTranspose2d(32, 16, kernel_size=3, stride=2, padding=1, output_padding=1),
             nn.LeakyReLU(inplace=True),
-            StormFire(64, 16, 64, 64),
-            nn.ConvTranspose2d(128, 64, kernel_size=3, stride=2, padding=1, output_padding=1),
-            nn.BatchNorm2d(64),
-            nn.LeakyReLU(inplace=True),
-            nn.Conv2d(64, 3, kernel_size=3, padding=1),  # Final layer to get back to original channels
-            nn.Tanh()  # Assuming the original images are normalized to [-1, 1]
+            nn.BatchNorm2d(16),
+
+            nn.ConvTranspose2d(16, 3, kernel_size=3, stride=2, padding=1, output_padding=1),
+            nn.Sigmoid()
         )
+
 
 
 

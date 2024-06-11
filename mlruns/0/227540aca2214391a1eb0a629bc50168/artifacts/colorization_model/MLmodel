@@ -1,0 +1,21 @@
+artifact_path: colorization_model
+flavors:
+  python_function:
+    config:
+      device: null
+    data: data
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.pytorch
+    pickle_module_name: mlflow.pytorch.pickle_module
+    python_version: 3.12.0
+  pytorch:
+    code: null
+    model_data: data
+    pytorch_version: 2.2.2+cu121
+mlflow_version: 2.12.1
+model_size_bytes: 3933452
+model_uuid: d12fa8571aee498998088cfc44041554
+run_id: 227540aca2214391a1eb0a629bc50168
+utc_time_created: '2024-06-11 04:58:19.872928'

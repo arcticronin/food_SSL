@@ -1,0 +1,15 @@
+artifact_uri: file:///home/ronin/Dev/notebooks/machinelearningformodeling/supervised/project/mlruns/0/227540aca2214391a1eb0a629bc50168/artifacts
+end_time: 1718081902677
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 227540aca2214391a1eb0a629bc50168
+run_name: colorization_model_v2_pixelnormalization
+run_uuid: 227540aca2214391a1eb0a629bc50168
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1718055562110
+status: 3
+tags: []
+user_id: ronin

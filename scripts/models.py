@@ -15,6 +15,7 @@ class StormModel(nn.Module):
     # we added BatchNorm after each convolutional layer
     # we modified the number of fire modules and the number of filters in each fire module
 
+    
     def __init__(self, num_classes: int = 251, dropout: float = 0.5) -> None:
         super().__init__()
         self.num_classes = num_classes
@@ -48,12 +49,14 @@ class StormModel(nn.Module):
             nn.LeakyReLU(inplace=True),
             nn.Dropout(p=dropout),
             nn.Linear(512, self.num_classes),
-        )
+    )
        
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = self.features(x)
         x = self.classifier(x)
         return torch.flatten(x, 1)
+
+
 
 
 
